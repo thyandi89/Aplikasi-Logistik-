@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Logistik Sarpras</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <style>
+    nav {
+      margin-bottom: 20px;
+    }
+    nav a {
+      margin-right: 15px;
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+    .section {
+      display: none;
+    }
+    .active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Dashboard Logistik Sarpras</h2>
+    <nav>
+      <a href="#" onclick="showSection('beranda')">Beranda</a>
+      <a href="#" onclick="showSection('inputBarang')">Input Barang</a>
+      <a href="#" onclick="showSection('stokMasuk')">Stok Masuk</a>
+      <a href="#" onclick="showSection('stokKeluar')">Stok Keluar</a>
+      <a href="#" onclick="showSection('scanBarcode')">Scan Barcode</a>
+    </nav>
+
+    <div id="beranda" class="section active">
+      <h3>Selamat Datang di Dashboard</h3>
+      <p>Silakan pilih menu di atas untuk mengelola data logistik.</p>
+    </div>
+
+    <div id="inputBarang" class="section">
+      <h3>Input Barang</h3>
+      <form>
+        <input type="text" placeholder="Nama Barang" required><br>
+        <input type="number" placeholder="Jumlah" required><br>
+        <button type="submit">Simpan</button>
+      </form>
+    </div>
+
+    <div id="stokMasuk" class="section">
+      <h3>Data Stok Masuk</h3>
+      <table>
+        <tr><th>Nama Barang</th><th>Jumlah</th><th>Tanggal</th></tr>
+        <tr><td>Contoh A</td><td>10</td><td>2025-05-08</td></tr>
+      </table>
+    </div>
+
+    <div id="stokKeluar" class="section">
+      <h3>Data Stok Keluar</h3>
+      <table>
+        <tr><th>Nama Barang</th><th>Jumlah</th><th>Tanggal</th></tr>
+        <tr><td>Contoh B</td><td>5</td><td>2025-05-08</td></tr>
+      </table>
+    </div>
+
+    <div id="scanBarcode" class="section">
+      <h3>Scan Barcode Barang</h3>
+      <div id="reader" style="width: 300px;"></div>
+    </div>
+  </div>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    const html5QrCode = new Html5Qrcode("reader");
+    const config = { fps: 10, qrbox: 250 };
+
+    document.querySelector('a[onclick*="scanBarcode"]').addEventListener('click', () => {
+      html5QrCode.start({ facingMode: "environment" }, config, (decodedText) => {
+        alert("Barang ditemukan dengan kode: " + decodedText);
+        html5QrCode.stop();
+      });
+    });
+  </script>
+</body>
+</html>
